@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface EntryRepository
         extends JpaRepository<Entry, Long> {
 
+    // 客製化sql
     @Query("" +
             "SELECT CASE WHEN COUNT(s) > 0 THEN " +
             "TRUE ELSE FALSE END " +

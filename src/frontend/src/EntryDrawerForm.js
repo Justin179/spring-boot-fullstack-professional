@@ -21,7 +21,7 @@ function EntryDrawerForm({showDrawer, setShowDrawer, fetchEntries}) {
                 onCLose();
                 successNotification(
                     "entry successfully added",
-                    `${entry.name} was added to the system`
+                    `${entry.content} was added to the system`
                     )
                 fetchEntries();
             }).catch(err => {
@@ -75,24 +75,17 @@ function EntryDrawerForm({showDrawer, setShowDrawer, fetchEntries}) {
                         <Input placeholder="Please enter enter content"/>
                     </Form.Item>
                 </Col>
-                <Col span={12}>
-                    <Form.Item
-                        name="date"
-                        label="Date"
-                        rules={[{required: true, message: 'Please enter entry date'}]}
-                    >
-                        <Input placeholder="Please enter entry date"/>
-                    </Form.Item>
-                </Col>
+
             </Row>
+
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
                         name="remark"
-                        label="remark"
-                        rules={[{required: true, message: 'Please enter entry remark'}]}
+                        label="Remark"
+                        rules={[{required: false, message: 'Please enter entry remark'}]}
                     >
-                        <Input placeholder="Please enter entry date"/>
+                        <Input placeholder="Please enter entry remark"/>
                     </Form.Item>
                 </Col>
             </Row>

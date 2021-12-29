@@ -3,7 +3,6 @@ import {deleteEntry, getAllEntries} from "./client";
 import {
     Layout,
     Menu,
-    Breadcrumb,
     Table,
     Spin,
     Empty,
@@ -15,35 +14,18 @@ import {
 } from 'antd';
 
 import {
-    DesktopOutlined,
-    PieChartOutlined,
-    FileOutlined,
-    TeamOutlined,
     UserOutlined,
     LoadingOutlined,
-    PlusOutlined
+    PlusOutlined,
+    DownloadOutlined
 } from '@ant-design/icons';
 import EntryDrawerForm from "./EntryDrawerForm";
 
 import './App.css';
 import {errorNotification, successNotification} from "./Notification";
 
-const {Header, Content, Footer, Sider} = Layout;
-const {SubMenu} = Menu;
+const {Header, Content, Footer} = Layout;
 
-const TheAvatar = ({name}) => {
-    let trim = name.trim();
-    if (trim.length === 0) {
-        return <Avatar icon={<UserOutlined/>}/>
-    }
-    const split = trim.split(" ");
-    if (split.length === 1) {
-        return <Avatar>{name.charAt(0)}</Avatar>
-    }
-    return <Avatar>
-        {`${name.charAt(0)}${name.charAt(name.length - 1)}`}
-    </Avatar>
-}
 
 const removeEntry = (entryId, callback) => {
 
@@ -106,11 +88,7 @@ const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
 function App() {
 
-    // getAllEntries().then(res => res.json())
-    //     .then(console.log)
-
     const [entries, setEntries] = useState([]);
-    const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
 
@@ -172,10 +150,13 @@ function App() {
                         <Tag>Number of entries</Tag>
                         <Badge count={entries.length} className="site-badge-count-4"/>
                         &emsp;
-                        <Button
-                            onClick={() => setShowDrawer(!showDrawer)}
+                        <Button onClick={() => setShowDrawer(!showDrawer)}
                             type="primary"  shape="round" icon={<PlusOutlined/>} size="small">
                             Add New Entry
+                        </Button>
+                        &emsp;
+                        <Button type="primary" shape="round" icon={<DownloadOutlined />} size="small">
+                            Download (待作)
                         </Button>
                     </>
                 }
@@ -188,12 +169,12 @@ function App() {
 
 
     // layout component
-    return <Layout style={{minHeight: '100vh'}}>
+    return <Layout style={{minHeight: '50vh'}}>
         <Layout>
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
                 <div className="logo" />
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1">nav 1</Menu.Item>
+                    <Menu.Item key="1">Daily Entries</Menu.Item>
                     <Menu.Item key="2">nav 2</Menu.Item>
                     <Menu.Item key="3">nav 3</Menu.Item>
                 </Menu>

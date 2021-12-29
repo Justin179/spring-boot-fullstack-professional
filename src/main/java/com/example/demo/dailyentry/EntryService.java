@@ -29,6 +29,10 @@ public class EntryService {
     public void addEntry(Entry entry) {
         entryRepository.save(entry);
     }
+    // 改
+    public void updateEntry(Entry entry) {
+        entryRepository.save(entry);
+    }
 
     // 刪
     public void deleteEntry(Long entryId) {

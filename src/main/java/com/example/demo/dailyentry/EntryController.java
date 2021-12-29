@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,8 +38,23 @@ public class EntryController {
 
     @PostMapping
     public void addEntry(@Valid @RequestBody Entry entry) {
+        entry.setDate(getCurrStrDate());
         entryService.addEntry(entry);
     }
+
+    @PutMapping(path = "{entryId}")
+    public void updateEntry(@PathVariable("entryId") Long entryId, @Valid @RequestBody Entry newEntry) throws EntryNotFoundException {
+        Entry existingEntry = entryService.getEntry(entryId);
+        if(existingEntry!=null){
+            existingEntry.setContent(newEntry.getContent());
+            existingEntry.setDate(newEntry.getDate());
+            existingEntry.setRemark(newEntry.getRemark());
+        } else
+            throw new EntryNotFoundException("Entry id " + newEntry.getId() + "does not exist!");
+
+        entryService.updateEntry(existingEntry);
+    }
+
 
     @DeleteMapping(path = "{entryId}")
     public void deleteEntry(
@@ -48,5 +62,11 @@ public class EntryController {
         entryService.deleteEntry(entryId);
     }
 
+    private String getCurrStrDate() {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yy.MM.dd HH:mm");
+        Date current = new Date();
+        String strDate = sdFormat.format(current);
+        return strDate;
+    }
 
 }
