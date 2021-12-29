@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {deleteStudent, getAllStudents} from "./client";
+import {deleteEntry, getAllEntries} from "./client";
 import {
     Layout,
     Menu,
@@ -23,11 +23,10 @@ import {
     LoadingOutlined,
     PlusOutlined
 } from '@ant-design/icons';
-import StudentDrawerForm from "./StudentDrawerForm";
+import EntryDrawerForm from "./EntryDrawerForm";
 
 import './App.css';
 import {errorNotification, successNotification} from "./Notification";
-
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
@@ -46,10 +45,10 @@ const TheAvatar = ({name}) => {
     </Avatar>
 }
 
-const removeStudent = (studentId, callback) => {
+const removeEntry = (entryId, callback) => {
 
-    deleteStudent(studentId).then(() => {
-        successNotification( "Student deleted", `Student with ${studentId} was deleted`);
+    deleteEntry(entryId).then(() => {
+        successNotification( "Entry deleted", `Entry with ${entryId} was deleted`);
         callback();
     }).catch(err => {
         err.response.json().then(res => {
@@ -62,43 +61,38 @@ const removeStudent = (studentId, callback) => {
     })
 }
 
-const columns = fetchStudents => [
-    {
-        title: '',
-        dataIndex: 'avatar',
-        key: 'avatar',
-        render: (text, student) =>
-            <TheAvatar name={student.name}/>
-    },
+// table component
+const columns = fetchEntries => [
+
     {
         title: 'Id',
         dataIndex: 'id',
         key: 'id',
     },
     {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
+        title: 'Content',
+        dataIndex: 'content',
+        key: 'content',
     },
     {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
     },
     {
-        title: 'Gender',
-        dataIndex: 'gender',
-        key: 'gender',
+        title: 'Remark',
+        dataIndex: 'remark',
+        key: 'remark',
     },
     {
         title: 'Actions',
         key: 'actions',
-        render: (text, student) =>
+        render: (text, entry) =>
             <Radio.Group>
                 <Popconfirm
                     placement='topRight'
-                    title={`Are you sure to delete ${student.name}`}
-                    onConfirm={() => removeStudent(student.id, fetchStudents)}
+                    title={`Are you sure to delete ${entry.content}`}
+                    onConfirm={() => removeEntry(entry.id, fetchEntries)}
                     okText='Yes'
                     cancelText='No'>
                     <Radio.Button value="small">Delete</Radio.Button>
@@ -111,17 +105,21 @@ const columns = fetchStudents => [
 const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
 function App() {
-    const [students, setStudents] = useState([]);
+
+    // getAllEntries().then(res => res.json())
+    //     .then(console.log)
+
+    const [entries, setEntries] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
 
-    const fetchStudents = () =>
-        getAllStudents()
+    const fetchEntries = () =>
+        getAllEntries()
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                setStudents(data);
+                setEntries(data);
 
             }).catch(err => {
                 console.log(err.response);
@@ -136,97 +134,76 @@ function App() {
 
     useEffect(() => {
         console.log("component is mounted");
-        fetchStudents();
+        fetchEntries();
     }, []);
 
-    const renderStudents = () => {
+    // middle list -> Table
+    const renderEntries = () => {
         if (fetching) {
             return <Spin indicator={antIcon}/>
         }
-        if (students.length <= 0) {
+        if (entries.length <= 0) {
             return <>
                 <Button
                     onClick={() => setShowDrawer(!showDrawer)}
                     type="primary" shape="round" icon={<PlusOutlined/>} size="small">
-                    Add New Student
+                    Add New Entry
                 </Button>
-                <StudentDrawerForm
+                <EntryDrawerForm
                     showDrawer={showDrawer}
                     setShowDrawer={setShowDrawer}
-                    fetchStudents={fetchStudents}
+                    fetchEntries={fetchEntries}
                 />
                 <Empty/>
             </>
         }
         return <>
-            <StudentDrawerForm
+            <EntryDrawerForm
                 showDrawer={showDrawer}
                 setShowDrawer={setShowDrawer}
-                fetchStudents={fetchStudents}
+                fetchEntries={fetchEntries}
             />
             <Table
-                dataSource={students}
-                columns={columns(fetchStudents)}
+                dataSource={entries}
+                columns={columns(fetchEntries)}
                 bordered
                 title={() =>
                     <>
-                        <Tag>Number of students</Tag>
-                        <Badge count={students.length} className="site-badge-count-4"/>
-                        <br/><br/>
+                        <Tag>Number of entries</Tag>
+                        <Badge count={entries.length} className="site-badge-count-4"/>
+                        &emsp;
                         <Button
                             onClick={() => setShowDrawer(!showDrawer)}
-                            type="primary" shape="round" icon={<PlusOutlined/>} size="small">
-                            Add New Student
+                            type="primary"  shape="round" icon={<PlusOutlined/>} size="small">
+                            Add New Entry
                         </Button>
                     </>
                 }
                 pagination={{pageSize: 50}}
                 scroll={{y: 500}}
-                rowKey={student => student.id}
+                rowKey={entry => entry.id}
             />
         </>
     }
 
 
-
+    // layout component
     return <Layout style={{minHeight: '100vh'}}>
-        <Sider collapsible collapsed={collapsed}
-               onCollapse={setCollapsed}>
-            <div className="logo"/>
-
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                    Option 1
-                </Menu.Item>
-                <Menu.Item key="2" icon={<DesktopOutlined/>}>
-                    Option 2
-                </Menu.Item>
-                <SubMenu key="sub1" icon={<UserOutlined/>} title="User">
-                    <Menu.Item key="3">Tom</Menu.Item>
-                    <Menu.Item key="4">Bill</Menu.Item>
-                    <Menu.Item key="5">Alex</Menu.Item>
-                </SubMenu>
-                <SubMenu key="sub2" icon={<TeamOutlined/>} title="Team">
-                    <Menu.Item key="6">Team 1</Menu.Item>
-                    <Menu.Item key="8">Team 2</Menu.Item>
-                </SubMenu>
-                <Menu.Item key="9" icon={<FileOutlined/>}>
-                    Files
-                </Menu.Item>
-            </Menu>
-        </Sider>
-        <Layout className="site-layout">
-            <Header className="site-layout-background" style={{padding: 0}}/>
-            <Content style={{margin: '0 16px'}}>
-                <Breadcrumb style={{margin: '16px 0'}}>
-                    <Breadcrumb.Item>User</Breadcrumb.Item>
-                    <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                </Breadcrumb>
-                <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-                    {renderStudents()}
+        <Layout>
+            <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+                <div className="logo" />
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                    <Menu.Item key="1">nav 1</Menu.Item>
+                    <Menu.Item key="2">nav 2</Menu.Item>
+                    <Menu.Item key="3">nav 3</Menu.Item>
+                </Menu>
+            </Header>
+            <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+                <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+                    {renderEntries()}
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>By Amigoscode</Footer>
+            <Footer style={{ textAlign: 'center' }}>Daily Entry ©2021 Created by Justin</Footer>
         </Layout>
     </Layout>
 }

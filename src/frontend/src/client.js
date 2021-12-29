@@ -10,21 +10,21 @@ const checkStatus = response => {
     return Promise.reject(error);
 }
 
-export const getAllStudents = () =>
-    fetch("api/v1/students")
+export const getAllEntries = () =>
+    fetch("api/v1/entries")
         .then(checkStatus);
 
-export const addNewStudent = student =>
-    fetch("api/v1/students", {
+export const addNewEntry = entry =>
+    fetch("api/v1/entries", {
             headers: {
                 'Content-Type': 'application/json'
             },
             method: 'POST',
-            body: JSON.stringify(student)
+            body: JSON.stringify(entry)
         }
     ).then(checkStatus)
 
-export const deleteStudent = studentId =>
-    fetch(`api/v1/students/${studentId}`, {
+export const deleteEntry = entryId =>
+    fetch(`api/v1/entries/${entryId}`, {
         method: 'DELETE'
     }).then(checkStatus);

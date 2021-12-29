@@ -29,7 +29,7 @@ public class Student {
     @Column(nullable = false)
     private String name;
     @Email
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
