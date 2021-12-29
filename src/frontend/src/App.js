@@ -9,14 +9,13 @@ import {
     Button,
     Badge,
     Tag,
-    Avatar,
     Radio, Popconfirm
 } from 'antd';
 
 import {
-    UserOutlined,
     LoadingOutlined,
     PlusOutlined,
+    EditOutlined,
     DownloadOutlined
 } from '@ant-design/icons';
 import EntryDrawerForm from "./EntryDrawerForm";
@@ -41,6 +40,11 @@ const removeEntry = (entryId, callback) => {
             )
         });
     })
+}
+
+
+function setShowDrawer(entry) {
+    alert(entry.id);
 }
 
 // table component
@@ -79,7 +83,11 @@ const columns = fetchEntries => [
                     cancelText='No'>
                     <Radio.Button value="small">Delete</Radio.Button>
                 </Popconfirm>
-                <Radio.Button value="small">Edit</Radio.Button>
+                &emsp; &emsp;
+                <Button onClick={() => setShowDrawer(entry)}
+                         icon={<EditOutlined />} >
+                    Edit
+                </Button>
             </Radio.Group>
     }
 ];

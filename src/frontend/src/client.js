@@ -22,6 +22,16 @@ export const addNewEntry = entry =>
             method: 'POST',
             body: JSON.stringify(entry)
         }
+    ).then(checkStatus);
+
+export const updateNewEntry = entry =>
+    fetch("api/v1/entries", {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(entry)
+        }
     ).then(checkStatus)
 
 export const deleteEntry = entryId =>

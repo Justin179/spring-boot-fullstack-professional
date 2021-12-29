@@ -42,9 +42,9 @@ public class EntryController {
         entryService.addEntry(entry);
     }
 
-    @PutMapping(path = "{entryId}")
-    public void updateEntry(@PathVariable("entryId") Long entryId, @Valid @RequestBody Entry newEntry) throws EntryNotFoundException {
-        Entry existingEntry = entryService.getEntry(entryId);
+    @PutMapping
+    public void updateEntry(@Valid @RequestBody Entry newEntry) throws EntryNotFoundException {
+        Entry existingEntry = entryService.getEntry(newEntry.getId());
         if(existingEntry!=null){
             existingEntry.setContent(newEntry.getContent());
             existingEntry.setDate(newEntry.getDate());
