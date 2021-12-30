@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {deleteEntry, getAllEntries} from "./client";
 import {
     Layout,
@@ -9,7 +9,8 @@ import {
     Button,
     Badge,
     Tag,
-    Radio, Popconfirm
+    Radio, Popconfirm,
+    Form, Input, Checkbox
 } from 'antd';
 
 import {
@@ -44,7 +45,7 @@ const removeEntry = (entryId, callback) => {
 
 
 function setShowDrawer(entry) {
-    alert(entry.id);
+
 }
 
 // table component

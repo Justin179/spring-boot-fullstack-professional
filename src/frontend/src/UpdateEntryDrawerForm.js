@@ -40,6 +40,7 @@ function UpdateEntryDrawerForm({showDrawer, setShowDrawer, fetchEntries}) {
     };
 
     const onFinishFailed = errorInfo => {
+
         alert(JSON.stringify(errorInfo, null, 2));
     };
 
