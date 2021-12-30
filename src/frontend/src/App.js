@@ -10,7 +10,7 @@ import {
     Badge,
     Tag,
     Radio, Popconfirm,
-    Form, Input, Checkbox
+    Form, Input, Checkbox, Drawer
 } from 'antd';
 
 import {
@@ -20,6 +20,7 @@ import {
     DownloadOutlined
 } from '@ant-design/icons';
 import EntryDrawerForm from "./EntryDrawerForm";
+import DrawerForm from "./Drawer"
 
 import './App.css';
 import {errorNotification, successNotification} from "./Notification";
@@ -45,6 +46,7 @@ const removeEntry = (entryId, callback) => {
 
 
 function setShowDrawer(entry) {
+    // var mountNode = document.getElementById('container');
 
 }
 
@@ -89,7 +91,13 @@ const columns = fetchEntries => [
                          icon={<EditOutlined />} >
                     Edit
                 </Button>
+
+
+                <DrawerForm/>
+
+
             </Radio.Group>
+
     }
 ];
 
