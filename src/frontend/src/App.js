@@ -81,7 +81,7 @@ const columns = fetchEntries => [
                 </Popconfirm>
                 &emsp;
 
-                <DrawerForm rowData={entry}/>
+                <DrawerForm rowData={entry} fetchEntries={fetchEntries}/>
 
             </Radio.Group>
 
