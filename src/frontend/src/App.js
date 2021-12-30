@@ -9,14 +9,12 @@ import {
     Button,
     Badge,
     Tag,
-    Radio, Popconfirm,
-    Form, Input, Checkbox, Drawer
+    Radio, Popconfirm
 } from 'antd';
 
 import {
     LoadingOutlined,
     PlusOutlined,
-    EditOutlined,
     DownloadOutlined
 } from '@ant-design/icons';
 import EntryDrawerForm from "./EntryDrawerForm";
@@ -29,7 +27,6 @@ const {Header, Content, Footer} = Layout;
 
 
 const removeEntry = (entryId, callback) => {
-
     deleteEntry(entryId).then(() => {
         successNotification( "Entry deleted", `Entry with ${entryId} was deleted`);
         callback();
@@ -45,10 +42,6 @@ const removeEntry = (entryId, callback) => {
 }
 
 
-function setShowDrawer(entry) {
-    // var mountNode = document.getElementById('container');
-
-}
 
 // table component
 const columns = fetchEntries => [
@@ -86,20 +79,16 @@ const columns = fetchEntries => [
                     cancelText='No'>
                     <Radio.Button value="small">Delete</Radio.Button>
                 </Popconfirm>
-                &emsp; &emsp;
-                <Button onClick={() => setShowDrawer(entry)}
-                         icon={<EditOutlined />} >
-                    Edit
-                </Button>
+                &emsp;
 
-
-                <DrawerForm/>
-
+                <DrawerForm rowData={entry}/>
 
             </Radio.Group>
 
     }
 ];
+
+
 
 const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
@@ -131,6 +120,7 @@ function App() {
         console.log("component is mounted");
         fetchEntries();
     }, []);
+
 
     // middle list -> Table
     const renderEntries = () => {
@@ -185,6 +175,7 @@ function App() {
     }
 
 
+
     // layout component
     return <Layout style={{minHeight: '50vh'}}>
         <Layout>
@@ -204,6 +195,8 @@ function App() {
             <Footer style={{ textAlign: 'center' }}>Daily Entry ©2021 Created by Justin</Footer>
         </Layout>
     </Layout>
+
+
 }
 
 export default App;
