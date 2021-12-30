@@ -4,7 +4,7 @@ import './index.css';
 import './index2.css';
 import { Drawer, Button, Space } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import {addNewEntry} from "./client";
+import {addNewEntry, updateNewEntry} from "./client";
 import {successNotification, errorNotification} from "./Notification";
 
 class DrawerForm extends React.Component {
@@ -15,6 +15,7 @@ class DrawerForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.input0 = React.createRef();
         this.input1 = React.createRef();
         this.input2 = React.createRef();
     }
@@ -42,23 +43,26 @@ class DrawerForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        let varId = this.input0.current.value;
+        console.log(varId);
+
         let varContent = this.input1.current.value;
         // console.log(varContent);
         let varRemark = this.input2.current.value;
         // console.log(varRemark);
+
         let data = {
+            id: varId,
             content: varContent,
             remark: varRemark
         };
 
-        // console.log(data);
-
-        addNewEntry(data)
+        updateNewEntry(data)
             .then(() => {
                 console.log("entry added")
                 successNotification(
-                    "entry successfully added",
-                    ` was added to the system`
+                    "entry successfully updated",
+                    `${data.content} was updated to the system`
                 )
                 this.props.fetchEntries();
             }).catch(err => {
@@ -77,7 +81,6 @@ class DrawerForm extends React.Component {
             });
         })
     }
-
 
     render() {
 
@@ -104,6 +107,9 @@ class DrawerForm extends React.Component {
 
                     <div className="center">
                         <form onSubmit={this.handleSubmit}>
+
+                            <input type="text" type="hidden" ref={this.input0}  defaultValue={this.props.rowData.id} onChange={this.handleChange} />
+
                             <div className="inputbox">
                                 <input type="text" ref={this.input1} required="required" defaultValue={this.props.rowData.content} onChange={this.handleChange} />
                                 <span>Content</span>
@@ -112,6 +118,7 @@ class DrawerForm extends React.Component {
                                 <input type="text" ref={this.input2} defaultValue={this.props.rowData.remark} onChange={this.handleChange} />
                                 <span>Remark</span>
                             </div>
+
                             <div className="inputbox">
                                 <input type="submit"  value="Submit"/>
                             </div>

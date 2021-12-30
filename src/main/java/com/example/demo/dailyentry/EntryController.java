@@ -47,7 +47,7 @@ public class EntryController {
         Entry existingEntry = entryService.getEntry(newEntry.getId());
         if(existingEntry!=null){
             existingEntry.setContent(newEntry.getContent());
-            existingEntry.setDate(newEntry.getDate());
+            existingEntry.setDate(getCurrStrDate());
             existingEntry.setRemark(newEntry.getRemark());
         } else
             throw new EntryNotFoundException("Entry id " + newEntry.getId() + "does not exist!");
