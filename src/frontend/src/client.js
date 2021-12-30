@@ -15,6 +15,7 @@ export const getAllEntries = () =>
         .then(checkStatus);
 
 export const addNewEntry = entry =>
+
     fetch("api/v1/entries", {
             headers: {
                 'Content-Type': 'application/json'
